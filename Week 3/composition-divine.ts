@@ -7,8 +7,10 @@ class Laptop{
     powerState: boolean = false
     bitKind: BitKind
     os: OS
+    allUpdateLogs: string[] = [];
 
-    constructor(bit: BitKind, display: Display, nic: NetworkInterfaceCard, os: OS, harddisk: HardDisk){
+    constructor(keyboard: Keyboard, bit: BitKind, display: Display, nic: NetworkInterfaceCard, os: OS, harddisk: HardDisk){
+        this.keyboard.push(keyboard)
         this.bitKind = bit
         this.screen = display
         this.nic = nic
@@ -23,43 +25,60 @@ class Laptop{
     switchOff(){
         this.powerState = false
     }
+    showAllUpdateLogs(){
+        console.log("All updates made: " + this.allUpdateLogs.join("\n"))
+    }
 
     update(thingToUpdate: string, newValue: any){
-        const allUpdateLogs: string[] = [];
         let error: string = "";
         thingToUpdate.toLowerCase();
         switch(thingToUpdate){
             case "keyboard":
-                error = !(newValue instanceof Keyboard) ? "Invalid input: The new value must be an instance of Keyboard" : "";
+                if (!(newValue instanceof Keyboard)) {
+                    error = "Invalid input: The new value must be an instance of Keyboard"
+                    return
+                }
                 this.keyboard.push(newValue)
-                allUpdateLogs.push(`Keyboard updated: ${newValue.kind} keyboard with ${newValue.layout} layout`)
+                this.allUpdateLogs.push(`Keyboard updated: ${newValue.kind} keyboard with ${newValue.layout} layout`)
                 break
             case "nic":
-                error = (typeof newValue !== "string") ? "Invalid input: The new value must be a string" : "";
+                if ((typeof newValue !== "string")) {
+                    error = "Invalid input: The new value must be a string"
+                    return
+                }
                 this.nic.name = newValue
-                allUpdateLogs.push(`NIC updated: ${newValue}`)
+                this.allUpdateLogs.push(`NIC updated: ${newValue}`)
                 break
             case "display":
-                error = !(newValue instanceof Display) ? "Invalid input: The new value must be an instance of Display" : "";
+                if(!(newValue instanceof Display)) {
+                    error = "Invalid input: The new value must be an instance of Display"
+                    return
+                }
                 this.screen = newValue
-                allUpdateLogs.push(`Display updated: ${newValue.size} inches ${newValue.type} display`)
+                this.allUpdateLogs.push(`Display updated: ${newValue.size} inches ${newValue.type} display`)
                 break
             case "hardDisk":
-                error = !(newValue instanceof HardDisk) ? "Invalid input: The new value must be an instance of HardDisk" : "";
+                if(!(newValue instanceof HardDisk)) {
+                    error = "Invalid input: The new value must be an instance of HardDisk"
+                    return
+                }
                 this.hardDisk = newValue
-                allUpdateLogs.push(`HardDisk updated: ${newValue.type}`)
+                this.allUpdateLogs.push(`HardDisk updated: ${newValue.type}`)
                 break
             case "os":
-                error = !(newValue instanceof OS) ? "Invalid input: The new value must be an instance of OS" : "";
+                if (!(newValue instanceof OS)) {
+                    error = "Invalid input: The new value must be an instance of OS"
+                    return
+                }
                 this.os = newValue
-                allUpdateLogs.push(`OS updated: ${newValue.type}`)
+                this.allUpdateLogs.push(`OS updated: ${newValue.type}`)
                 break
             default:
                 console.log("Invalid input")
         }
 
         console.log(error)
-        console.log(allUpdateLogs.join("\n"))
+        this.showAllUpdateLogs()
     }
 }
 
@@ -72,7 +91,7 @@ class BitKind{
 class Keyboard{
     kind: KeyboardKind
     layout: KeyboardLayout
-    keys: string[] 
+    // keys: string[] 
 }
 
 type KeyboardKind = "in-built" | "external"
@@ -99,13 +118,4 @@ class HardDisk{
     type: "ssd" | "hdd"
 }
 
-const myLaptopDisplay = new Display();
-myLaptopDisplay.displaySize = 15;
-myLaptopDisplay.displayType = "amoled";
-
-const myLaptop = new Laptop({type: "x64"}, myLaptopDisplay, {name: "Realtek"}, {type: "windows"}, {type: "ssd"})
-
-console.log(myLaptop);
-myLaptop.update("nic", "Intel");
-myLaptop.update("display", {size: 17, type: "lcd"});
-console.log(myLaptop);
+export {Laptop, OS, BitKind, Keyboard, KeyboardKind, KeyboardLayout, NetworkInterfaceCard, Display, DisplayType, HardDisk};
