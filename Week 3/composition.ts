@@ -50,3 +50,4 @@
 // type KeyBoardKind = "in-built" | "external"; // this basically makes KeBoardKind a type that can only be "in-built" or "external"
 // type KeyBoardLayout = "Qwerty" | "Azerty" | "Dvorak" | "Qwertz"; // this basically makes KeyBoardLayout a type that can only be "Qwerty" or "Azerty" or "Dvorak"
 // type BitKind = "x64" | "x32" | "x86"; // this basically makes bitKind a type that can only be "x64" or "x32" or "x86"
+
