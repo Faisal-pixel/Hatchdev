@@ -107,4 +107,5 @@ const myLaptop = new Laptop({type: "x64"}, myLaptopDisplay, {name: "Realtek"}, {
 
 console.log(myLaptop);
 myLaptop.update("nic", "Intel");
+myLaptop.update("display", {size: 17, type: "lcd"});
 console.log(myLaptop);
